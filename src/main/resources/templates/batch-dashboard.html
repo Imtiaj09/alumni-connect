@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ব্যাচ কন্ট্রোলার ড্যাশবোর্ড</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/batch/dashboard}">ব্যাচ কন্ট্রোলার</a>
+        <form th:action="@{/logout}" method="post" class="m-0">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button type="submit" class="btn btn-outline-light">লগআউট</button>
+        </form>
+    </div>
+</nav>
+<main class="container py-5 flex-fill">
+    <h2>স্বাগতম, ব্যাচ কন্ট্রোলার</h2>
+    <p>এখানে ব্যাচভিত্তিক ব্যবস্থাপনা ফিচারগুলো ধাপে ধাপে যোগ করা হবে।</p>
+</main>
+</body>
+</html>

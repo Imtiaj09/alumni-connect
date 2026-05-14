@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Alumni Connect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/public-ui.css}">
+</head>
+<body class="public-page d-flex flex-column">
+<th:block th:replace="~{fragments/public-layout :: publicCursor}"></th:block>
+<th:block th:replace="~{fragments/public-layout :: publicNav('contact')}"></th:block>
+
+<header class="contact-head">
+    <div class="container text-center">
+        <h1 class="display-5 mb-2" data-aos="fade-up">Let's Talk</h1>
+        <p data-aos="fade-up" data-aos-delay="80">We would love to hear from you.</p>
+    </div>
+    <div class="contact-wave"></div>
+</header>
+
+<main class="public-section pt-4">
+    <div class="container">
+        <div class="faq-strip mb-4" data-aos="fade-up">
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#f1">How do schools onboard?</button>
+                    </h2>
+                    <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">Software owner creates your school and admin account. Admin then creates batches and verifies members.</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">Can CR moderate posts and members?</button>
+                    </h2>
+                    <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">Yes. School admin can enable or disable CR permissions from CR permission settings.</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">Is gallery upload supported with files?</button>
+                    </h2>
+                    <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">Yes. School admin, CR, and members can upload image files directly according to permission scope.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-grid">
+            <div class="flip-box" id="contactFlipBox" data-aos="fade-right">
+                <div class="flip-inner">
+                    <section class="flip-face">
+                        <h3 class="mb-3">Send a Message</h3>
+                        <form id="contactForm">
+                            <div class="floating-group">
+                                <input id="cname" type="text" placeholder=" " required>
+                                <label for="cname">Full Name</label>
+                            </div>
+                            <div class="floating-group">
+                                <input id="cemail" type="email" placeholder=" " required>
+                                <label for="cemail">Email Address</label>
+                            </div>
+                            <div class="floating-group">
+                                <input id="cphone" type="tel" placeholder=" " required>
+                                <label for="cphone">Phone Number</label>
+                            </div>
+                            <div class="floating-group">
+                                <select id="csubject" required>
+                                    <option value="">Select Subject</option>
+                                    <option>Technical Support</option>
+                                    <option>School Onboarding</option>
+                                    <option>Subscription and Billing</option>
+                                    <option>Partnership</option>
+                                </select>
+                                <label for="csubject">Subject</label>
+                            </div>
+                            <div class="floating-group">
+                                <textarea id="cmessage" rows="4" placeholder=" " required></textarea>
+                                <label for="cmessage">Message</label>
+                            </div>
+                            <button class="cta-main w-100 justify-content-center" type="submit">Send Message <i class="fa-regular fa-paper-plane"></i></button>
+                        </form>
+                    </section>
+                    <section class="flip-face flip-back">
+                        <div class="mb-3 fs-1 text-success"><i class="fa-regular fa-circle-check"></i></div>
+                        <h4>Message Sent</h4>
+                        <p>Our team will reach out shortly.</p>
+                    </section>
+                </div>
+            </div>
+
+            <div data-aos="fade-left">
+                <section class="glass-card p-3 mb-3">
+                    <h5><i class="fa-solid fa-phone-volume me-2"></i>Phone</h5>
+                    <p class="mb-0">+880 1712-345678</p>
+                </section>
+                <section class="glass-card p-3 mb-3">
+                    <h5><i class="fa-solid fa-envelope-open-text me-2"></i>Email</h5>
+                    <p class="mb-0">support@alumniconnect.com</p>
+                </section>
+                <section class="glass-card p-3 mb-3">
+                    <h5><i class="fa-solid fa-location-dot me-2"></i>Location</h5>
+                    <p class="mb-0">Banani, Dhaka</p>
+                </section>
+                <section class="glass-card p-2">
+                    <div class="ratio ratio-4x3 rounded overflow-hidden">
+                        <iframe src="https://maps.google.com/maps?q=banani%20dhaka&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/public-layout :: publicFooter}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script th:src="@{/js/public-ui.js}"></script>
+</body>
+</html>

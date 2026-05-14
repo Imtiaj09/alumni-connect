@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাডমিন ব্যবস্থাপনা</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: ownerNav('admins')}"></th:block>
+<main class="app-main">
+<div class="page-hero">
+    <h2 th:text="${school.name} + ' Admin Management'"></h2>
+    <p class="mt-1">প্রতিষ্ঠানভিত্তিক অ্যাডমিন তালিকা ও নতুন অ্যাডমিন সংযোজন।</p>
+</div>
+<p class="text-success" th:if="${message}" th:text="${message}"></p>
+<section class="section-card mb-3">
+    <div class="section-head">
+        <h4>Current Admins</h4>
+    </div>
+    <div class="section-body p-0">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                <tr>
+                    <th>নাম</th>
+                    <th>ইমেইল</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="admin : ${admins}">
+                    <td th:text="${admin.fullName}"></td>
+                    <td th:text="${admin.email}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+ </section>
+<section class="section-card">
+    <div class="section-head">
+        <h4>নতুন অ্যাডমিন যোগ</h4>
+    </div>
+    <div class="section-body">
+        <form th:action="@{/owner/school/{id}/admin/add(id=${school.id})}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <input type="text" name="fullName" class="form-control" placeholder="নাম" required>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <input type="email" name="email" class="form-control" placeholder="ইমেইল" required>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <input type="password" name="password" class="form-control" placeholder="পাসওয়ার্ড" required>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">যোগ করুন</button>
+        </form>
+    </div>
+</section>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="publicNav(activeKey)">
+    <nav class="navbar navbar-expand-lg navbar-dark public-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand public-brand route-link" th:href="@{/}">
+                <span class="brand-orb"></span>
+                Alumni Connect
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="publicNavMenu">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                    <li class="nav-item">
+                        <a class="nav-link route-link" th:classappend="${activeKey == 'home'} ? ' active' : ''" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link route-link" th:classappend="${activeKey == 'gallery'} ? ' active' : ''" th:href="@{/memory-gallery}">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link route-link" th:classappend="${activeKey == 'contact'} ? ' active' : ''" th:href="@{/contact}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link route-link" th:classappend="${activeKey == 'about'} ? ' active' : ''" th:href="@{/about}">About</a>
+                    </li>
+                    <li class="nav-item ms-lg-1">
+                        <button class="btn btn-sm btn-outline-light public-theme-toggle" type="button" id="themeToggle" aria-label="Toggle theme">
+                            <i class="fa-solid fa-moon"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item ms-lg-1">
+                        <a class="btn btn-sm public-btn-ghost route-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item ms-lg-1">
+                        <a class="btn btn-sm public-btn-primary route-link" th:href="@{/register}">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</th:block>
+
+<th:block th:fragment="publicFooter">
+    <footer class="public-footer mt-auto">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="footer-brand">Alumni Connect</h5>
+                    <p class="footer-muted">Rebuild alumni communities with events, memories, and collaboration.</p>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="footer-social"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="footer-social"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="footer-social"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="footer-social"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6>Explore</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a class="route-link" th:href="@{/}">Home</a></li>
+                        <li><a class="route-link" th:href="@{/memory-gallery}">Gallery</a></li>
+                        <li><a class="route-link" th:href="@{/about}">About</a></li>
+                        <li><a class="route-link" th:href="@{/contact}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <h6>Resources</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a class="route-link" th:href="@{/login}">Member Login</a></li>
+                        <li><a class="route-link" th:href="@{/register}">Create Account</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h6>Contact</h6>
+                    <p class="footer-muted mb-1">support@alumniconnect.com</p>
+                    <p class="footer-muted mb-1">+880 1712-345678</p>
+                    <p class="footer-muted mb-0">Banani, Dhaka</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Alumni Connect</span>
+                <span class="footer-credit">Built with care for alumni communities.</span>
+            </div>
+        </div>
+    </footer>
+</th:block>
+
+<th:block th:fragment="publicCursor">
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মেম্বার মডারেশন</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: batchNav('members', batch.name)}"></th:block>
+    <main class="app-main">
+        <div class="page-hero">
+            <h2>Batch Members Moderation</h2>
+            <p class="mt-1">ব্যাচের সদস্য অনুরোধ, ভেরিফিকেশন ও স্ট্যাটাস কন্ট্রোল পরিচালনা করুন।</p>
+        </div>
+            <p class="text-success" th:if="${message}" th:text="${message}"></p>
+
+            <div class="card mb-3">
+                <div class="card-header">অপেক্ষমাণ সদস্য রিকোয়েস্ট</div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                            <thead>
+                            <tr>
+                                <th>নাম</th>
+                                <th>ইমেইল</th>
+                                <th>রোল</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="member : ${pendingMembers}">
+                                <td th:text="${member.fullName}"></td>
+                                <td th:text="${member.email}"></td>
+                                <td th:text="${member.role}"></td>
+                                <td class="d-flex gap-2">
+                                    <form th:action="@{/batch/members/approve/{id}(id=${member.id})}" method="post">
+                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                        <button class="btn btn-sm btn-success" type="submit">Approve</button>
+                                    </form>
+                                    <form th:action="@{/batch/members/reject/{id}(id=${member.id})}" method="post">
+                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                        <button class="btn btn-sm btn-danger" type="submit">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${pendingMembers.isEmpty()}">
+                                <td colspan="4" class="text-center text-muted">কোনো pending member নেই।</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <form class="row g-2 align-items-end" method="get" th:action="@{/batch/members}">
+                        <div class="col-md-4">
+                            <label class="form-label mb-1">Search</label>
+                            <input type="text" name="q" class="form-control" th:value="${q}" placeholder="নাম/ইমেইল/রোল">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label mb-1">Role</label>
+                            <select name="role" class="form-select">
+                                <option value="ALL" th:selected="${role == 'ALL'}">সব</option>
+                                <option value="MEMBER" th:selected="${role == 'MEMBER'}">MEMBER</option>
+                                <option value="BATCH_CONTROLLER" th:selected="${role == 'BATCH_CONTROLLER'}">BATCH_CONTROLLER</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label mb-1">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="ALL" th:selected="${status == 'ALL'}">সব</option>
+                                <option value="ACTIVE" th:selected="${status == 'ACTIVE'}">Active</option>
+                                <option value="SUSPENDED" th:selected="${status == 'SUSPENDED'}">Suspended</option>
+                                <option value="UNVERIFIED" th:selected="${status == 'UNVERIFIED'}">Unverified</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label mb-1">Page size</label>
+                            <select name="size" class="form-select">
+                                <option value="10" th:selected="${size == 10}">10</option>
+                                <option value="20" th:selected="${size == 20}">20</option>
+                                <option value="30" th:selected="${size == 30}">30</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-grid">
+                            <button class="btn btn-primary" type="submit">Apply</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                            <tr>
+                                <th>নাম</th>
+                                <th>ইমেইল</th>
+                                <th>রোল</th>
+                                <th>স্ট্যাটাস</th>
+                                <th>ভেরিফাই</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="member : ${members}">
+                                <td th:text="${member.fullName}"></td>
+                                <td th:text="${member.email}"></td>
+                                <td th:text="${member.role}"></td>
+                                <td>
+                                    <span class="badge bg-danger" th:if="${member.suspended}">Suspended</span>
+                                    <span class="badge bg-success" th:unless="${member.suspended}">Active</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary" th:if="${member.verified}">Verified</span>
+                                    <span class="badge bg-secondary" th:unless="${member.verified}">Unverified</span>
+                                </td>
+                                <td>
+                                    <form th:if="${!member.verified}"
+                                          th:action="@{/batch/members/verify/{id}(id=${member.id})}" method="post">
+                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                        <button class="btn btn-sm btn-outline-primary" type="submit">Verify</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${members.isEmpty()}">
+                                <td colspan="6" class="text-center text-muted">কোনো সদস্য পাওয়া যায়নি।</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <small>মোট: <span th:text="${totalItems}"></span></small>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-sm btn-outline-secondary"
+                           th:if="${page > 0}"
+                           th:href="@{/batch/members(q=${q},role=${role},status=${status},size=${size},page=${page-1})}">Prev</a>
+                        <span class="align-self-center">Page <span th:text="${page + 1}"></span> / <span th:text="${totalPages}"></span></span>
+                        <a class="btn btn-sm btn-outline-secondary"
+                           th:if="${page + 1 < totalPages}"
+                           th:href="@{/batch/members(q=${q},role=${role},status=${status},size=${size},page=${page+1})}">Next</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সফটওয়্যার ওনার ড্যাশবোর্ড</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: ownerNav('dashboard')}"></th:block>
+<main class="app-main">
+    <div class="page-hero">
+        <h2>Software Owner Command Center</h2>
+        <p class="mt-1">প্ল্যাটফর্মের সকল স্কুল, সাবস্ক্রিপশন এবং গভার্নেন্স এখান থেকে নিয়ন্ত্রণ করুন।</p>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="kpi-card kpi-card--indigo">
+            <div class="kpi-label">Total Schools</div>
+            <div class="kpi-value" th:text="${totalSchools}">0</div>
+            <div class="kpi-trend up">+ Platform growth</div>
+        </div>
+        <div class="kpi-card kpi-card--teal">
+            <div class="kpi-label">Active Schools</div>
+            <div class="kpi-value" th:text="${activeSchools}">0</div>
+            <div class="kpi-trend up">Operational</div>
+        </div>
+        <div class="kpi-card kpi-card--gold">
+            <div class="kpi-label">School Admins</div>
+            <div class="kpi-value" th:text="${totalAdmins}">0</div>
+            <div class="kpi-trend up">Distributed access</div>
+        </div>
+        <div class="kpi-card kpi-card--red">
+            <div class="kpi-label">Members + CR</div>
+            <div class="kpi-value" th:text="${totalMembers}">0</div>
+            <div class="kpi-trend down" th:text="'Inactive Schools: ' + ${inactiveSchools}">0</div>
+        </div>
+    </div>
+
+    <section class="section-card">
+        <div class="section-head">
+            <h4>Manage Schools</h4>
+            <a th:href="@{/owner/school/create}" class="btn btn-success">নতুন স্কুল তৈরি</a>
+        </div>
+        <div class="section-body">
+            <p class="text-success mb-2" th:if="${message}" th:text="${message}"></p>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                    <tr>
+                        <th>School</th>
+                        <th>City</th>
+                        <th>Status</th>
+                        <th>Admins</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="school : ${schools}">
+                        <td>
+                            <strong th:text="${school.name}"></strong>
+                        </td>
+                        <td th:text="${school.city} ?: 'N/A'"></td>
+                        <td>
+                            <span th:if="${school.active}" class="chip chip-ok">সক্রিয়</span>
+                            <span th:unless="${school.active}" class="chip chip-off">নিষ্ক্রিয়</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/owner/school/{id}/admins(id=${school.id})}">দেখুন</a>
+                        </td>
+                        <td>
+                            <form th:action="@{/owner/school/{id}/toggle-active(id=${school.id})}" method="post" class="d-inline">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button class="btn btn-sm btn-warning" type="submit">
+                                    <span th:if="${school.active}">নিষ্ক্রিয় করুন</span>
+                                    <span th:unless="${school.active}">সক্রিয় করুন</span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${schools.isEmpty()}">
+                        <td colspan="5" class="text-center text-muted">কোনো স্কুল পাওয়া যায়নি।</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <div class="section-card mt-3">
+        <div class="section-head">
+            <h4>Quick Navigation</h4>
+        </div>
+        <div class="section-body d-flex flex-wrap gap-2">
+            <a class="btn btn-outline-primary" th:href="@{/owner/analytics}">Analytics</a>
+            <a class="btn btn-outline-primary" th:href="@{/owner/subscriptions}">Subscriptions</a>
+            <a class="btn btn-outline-primary" th:href="@{/owner/permissions}">Platform Settings</a>
+            <a class="btn btn-outline-primary" th:href="@{/owner/activity-logs}">Activity Logs</a>
+        </div>
+    </div>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

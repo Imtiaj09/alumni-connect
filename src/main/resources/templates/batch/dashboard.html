@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ব্যাচ কন্ট্রোলার ড্যাশবোর্ড</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: batchNav('dashboard', batch.name)}"></th:block>
+<main class="app-main">
+    <div class="page-hero">
+        <h2>Batch Controller Dashboard</h2>
+        <p class="mt-1">ব্যাচের সদস্য, নোটিশ, পোস্ট ও গ্যালারি অপারেশন পরিচালনার কমান্ড সেন্টার।</p>
+    </div>
+    <div class="kpi-grid">
+        <div class="kpi-card kpi-card--teal">
+            <div class="kpi-label">মোট সদস্য</div>
+            <div class="kpi-value" th:text="${memberCount}"></div>
+        </div>
+        <div class="kpi-card kpi-card--gold">
+            <div class="kpi-label">নোটিশ</div>
+            <div class="kpi-value" th:text="${noticeCount}"></div>
+        </div>
+        <div class="kpi-card kpi-card--red">
+            <div class="kpi-label">অপেক্ষমাণ পোস্ট</div>
+            <div class="kpi-value" th:text="${pendingPosts}"></div>
+            <a th:if="${crPermissions != null and crPermissions.canApprovePosts}"
+               th:href="@{/batch/posts/pending}" class="btn btn-sm btn-outline-danger mt-1">মডারেট</a>
+        </div>
+        <div class="kpi-card kpi-card--indigo">
+            <div class="kpi-label">অপেক্ষমাণ সদস্য</div>
+            <div class="kpi-value" th:text="${pendingMembers}"></div>
+            <a th:if="${crPermissions != null and crPermissions.canModerateMembers}"
+               th:href="@{/batch/members}" class="btn btn-sm btn-outline-primary mt-1">পরিচালনা</a>
+        </div>
+        <div class="kpi-card kpi-card--teal">
+            <div class="kpi-label">গ্যালারি আইটেম</div>
+            <div class="kpi-value" th:text="${galleryItems}"></div>
+            <a th:if="${crPermissions != null and crPermissions.canUploadGallery}"
+               th:href="@{/batch/gallery}" class="btn btn-sm btn-outline-success mt-1">পরিচালনা</a>
+        </div>
+    </div>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

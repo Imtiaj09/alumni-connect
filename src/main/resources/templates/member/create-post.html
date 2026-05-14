@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পোস্ট তৈরি</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: memberNav('post-create', 'মেম্বার')}"></th:block>
+<main class="app-main">
+<div class="page-hero">
+    <h2>Create Post</h2>
+    <p class="mt-1">সাধারণ পোস্ট, ইভেন্ট বা ঘোষণা তৈরি করুন (মডারেশন প্রযোজ্য)।</p>
+</div>
+<section class="section-card">
+    <div class="section-head"><h4>Post Form</h4></div>
+    <div class="section-body">
+    <form th:action="@{/member/post/create}" method="post" th:object="${post}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div class="mb-3">
+            <label class="form-label">শিরোনাম</label>
+            <input type="text" class="form-control" th:field="*{title}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">বিস্তারিত</label>
+            <textarea class="form-control" th:field="*{content}" rows="4" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">পোস্ট টাইপ</label>
+            <select class="form-select" th:field="*{type}">
+                <option value="GENERAL">সাধারণ</option>
+                <option value="EVENT">ইভেন্ট</option>
+                <option value="ANNOUNCEMENT">ঘোষণা</option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">ইভেন্ট তারিখ (EVENT হলে)</label>
+                <input type="datetime-local" class="form-control" th:field="*{eventDate}">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">লোকেশন</label>
+                <input type="text" class="form-control" th:field="*{eventLocation}">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">RSVP Capacity</label>
+            <input type="number" class="form-control" th:field="*{rsvpCapacity}" min="1">
+        </div>
+        <button type="submit" class="btn btn-primary">জমা দিন</button>
+    </form>
+    </div>
+</section>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

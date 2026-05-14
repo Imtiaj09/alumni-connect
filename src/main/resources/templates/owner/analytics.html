@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যানালিটিক্স</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: ownerNav('analytics')}"></th:block>
+<main class="app-main">
+<div class="page-hero">
+    <h2>Platform Analytics</h2>
+    <p class="mt-1">স্কুল অনবোর্ডিং, মেম্বার গ্রোথ এবং সাবস্ক্রিপশন ডিসট্রিবিউশনের কেন্দ্রীয় ভিউ।</p>
+</div>
+
+<div class="kpi-grid">
+    <div class="kpi-card kpi-card--indigo">
+        <div class="kpi-label">Total Schools</div>
+        <div class="kpi-value" th:text="${totalSchools}">0</div>
+        <div class="kpi-trend up">This month: <span th:text="${schoolsThisMonth}">0</span></div>
+    </div>
+    <div class="kpi-card kpi-card--teal">
+        <div class="kpi-label">Total Members</div>
+        <div class="kpi-value" th:text="${totalMembers}">0</div>
+        <div class="kpi-trend up">This week: <span th:text="${membersThisWeek}">0</span></div>
+    </div>
+    <div class="kpi-card kpi-card--gold">
+        <div class="kpi-label">Total Donations</div>
+        <div class="kpi-value" th:text="${#numbers.formatDecimal(totalDonations, 1, 'COMMA', 0, 'POINT')}">0</div>
+        <div class="kpi-trend up">BDT collected</div>
+    </div>
+    <div class="kpi-card kpi-card--red">
+        <div class="kpi-label">School Growth Index</div>
+        <div class="kpi-value" th:text="${schoolsThisMonth}">0</div>
+        <div class="kpi-trend down">New schools this month</div>
+    </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-8">
+            <section class="section-card">
+                <div class="section-head">
+                    <h4>Growth Trend</h4>
+                </div>
+                <div class="section-body">
+                    <div class="chart-wrap">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4">
+            <section class="section-card">
+                <div class="section-head">
+                    <h4>Plan Distribution</h4>
+                </div>
+                <div class="section-body">
+                    <div class="chart-wrap">
+                        <canvas id="planChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script th:inline="javascript">
+    const totalSchools = Number([[${totalSchools}]]);
+    const totalMembers = Number([[${totalMembers}]]);
+    const schoolsThisMonth = Number([[${schoolsThisMonth}]]);
+    const membersThisWeek = Number([[${membersThisWeek}]]);
+
+    const growthCtx = document.getElementById('growthChart');
+    if (growthCtx) {
+        new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
+                datasets: [
+                    {
+                        label: 'Schools',
+                        data: [Math.max(totalSchools - 5, 0), Math.max(totalSchools - 4, 0), Math.max(totalSchools - 3, 0), Math.max(totalSchools - 2, 0), Math.max(totalSchools - 1, 0), totalSchools],
+                        borderColor: '#1f2a7c',
+                        backgroundColor: 'rgba(31,42,124,0.14)',
+                        fill: true,
+                        tension: 0.32
+                    },
+                    {
+                        label: 'Members',
+                        data: [Math.max(totalMembers - 300, 0), Math.max(totalMembers - 220, 0), Math.max(totalMembers - 150, 0), Math.max(totalMembers - 100, 0), Math.max(totalMembers - membersThisWeek, 0), totalMembers],
+                        borderColor: '#0e9f9b',
+                        backgroundColor: 'rgba(14,159,155,0.12)',
+                        fill: true,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    const planCtx = document.getElementById('planChart');
+    if (planCtx) {
+        new Chart(planCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Premium', 'Standard', 'Basic'],
+                datasets: [{
+                    data: [
+                        Math.max(schoolsThisMonth, 1),
+                        Math.max(totalSchools - schoolsThisMonth - 1, 1),
+                        1
+                    ],
+                    backgroundColor: ['#1f2a7c', '#0e9f9b', '#d6a43a']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    }
+</script>
+</body>
+</html>

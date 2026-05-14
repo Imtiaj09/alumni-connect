@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Alumni Connect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/public-ui.css}">
+</head>
+<body class="public-page d-flex flex-column">
+<th:block th:replace="~{fragments/public-layout :: publicCursor}"></th:block>
+<th:block th:replace="~{fragments/public-layout :: publicNav('about')}"></th:block>
+
+<header class="about-head">
+    <div class="container text-center">
+        <h1 class="display-5 mb-2" data-aos="fade-up">About Alumni Connect</h1>
+        <p data-aos="fade-up" data-aos-delay="80">
+            School-first alumni management platform for verified community, memories, and impact.
+        </p>
+    </div>
+    <div class="about-wave"></div>
+</header>
+
+<main class="public-section pt-4">
+    <div class="container">
+        <section class="section-headline" data-aos="fade-up">
+            <h2>Our Mission</h2>
+            <div class="headline-line"></div>
+        </section>
+        <section class="glass-card p-4 mb-4" data-aos="fade-up" data-aos-delay="70">
+            <p class="mb-2">
+                Alumni Connect is a cloud-based SaaS platform that modernizes alumni operations for schools in Bangladesh.
+                It connects software owner, school admin, batch controller (CR), and alumni members in one secure workflow.
+            </p>
+            <p class="mb-0">
+                The goal is long-term institutional connection: notices, events, gallery memories, mentoring, and donation impact
+                with role-based access and moderation.
+            </p>
+        </section>
+
+        <section class="section-headline mt-5" data-aos="fade-up">
+            <h2>Core Roles</h2>
+            <div class="headline-line"></div>
+        </section>
+        <section class="about-grid">
+            <article class="about-card" data-aos="fade-up">
+                <span class="icon-badge"><i class="fa-solid fa-crown"></i></span>
+                <h5>Software Owner</h5>
+                <p>Add schools, assign school admins, control platform-level features and monitor analytics.</p>
+            </article>
+            <article class="about-card" data-aos="fade-up" data-aos-delay="80">
+                <span class="icon-badge"><i class="fa-solid fa-school"></i></span>
+                <h5>School Admin</h5>
+                <p>Manage members, create batches, assign CR permissions, approve content, and run school campaigns.</p>
+            </article>
+            <article class="about-card" data-aos="fade-up" data-aos-delay="160">
+                <span class="icon-badge"><i class="fa-solid fa-user-graduate"></i></span>
+                <h5>Member & CR</h5>
+                <p>Build alumni network, join events, upload gallery images, post updates, and support fund goals.</p>
+            </article>
+        </section>
+
+        <section class="section-headline mt-5" data-aos="fade-up">
+            <h2>Why It Works</h2>
+            <div class="headline-line"></div>
+        </section>
+        <section class="row g-3 mb-4">
+            <div class="col-md-6 col-lg-3" data-aos="zoom-in">
+                <div class="glass-card p-3 h-100">
+                    <h5 class="mb-1">School-Isolated Data</h5>
+                    <p class="mb-0 small">Each school data remains isolated with strict access boundaries.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="60">
+                <div class="glass-card p-3 h-100">
+                    <h5 class="mb-1">Role-Based Permission</h5>
+                    <p class="mb-0 small">Admins can grant and revoke CR capabilities with transparent control.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="120">
+                <div class="glass-card p-3 h-100">
+                    <h5 class="mb-1">Verified Alumni</h5>
+                    <p class="mb-0 small">Verification and moderation keep community quality and trust high.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="180">
+                <div class="glass-card p-3 h-100">
+                    <h5 class="mb-1">Impact Workflows</h5>
+                    <p class="mb-0 small">Events, posts, gallery, and donations run in one integrated workflow.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card p-4" data-aos="fade-up">
+            <h4 class="mb-3">Impact Snapshot</h4>
+            <div class="row g-3">
+                <div class="col-6 col-lg-3"><div class="about-stat"><strong>500+</strong><span>Schools</span></div></div>
+                <div class="col-6 col-lg-3"><div class="about-stat"><strong>120K+</strong><span>Alumni</span></div></div>
+                <div class="col-6 col-lg-3"><div class="about-stat"><strong>2K+</strong><span>Batches</span></div></div>
+                <div class="col-6 col-lg-3"><div class="about-stat"><strong>৳5M+</strong><span>Community Fund</span></div></div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/public-layout :: publicFooter}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script th:src="@{/js/public-ui.js}"></script>
+</body>
+</html>

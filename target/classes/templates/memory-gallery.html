@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Alumni Connect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/public-ui.css}">
+</head>
+<body class="public-page d-flex flex-column">
+<th:block th:replace="~{fragments/public-layout :: publicCursor}"></th:block>
+<th:block th:replace="~{fragments/public-layout :: publicNav('gallery')}"></th:block>
+
+<header class="gallery-hero">
+    <div class="gallery-bg" id="galleryParallaxBg"></div>
+    <div class="container position-relative text-center" style="z-index:2;">
+        <h1 class="display-4 mb-2">Our Alumni Gallery</h1>
+        <p>Memories Moments and Milestones</p>
+    </div>
+</header>
+
+<main class="public-section pt-4" id="galleryPage">
+    <div class="container">
+        <section class="gallery-toolbar glass-card mb-4">
+            <div class="row g-2 align-items-center">
+                <div class="col-lg-3">
+                    <input type="text" id="gallerySearch" class="form-control" placeholder="Search memories">
+                </div>
+                <div class="col-lg-4 d-flex flex-wrap gap-2">
+                    <button type="button" class="chip-btn active" data-filter-chip="all">All</button>
+                    <button type="button" class="chip-btn" data-filter-chip="events">Events</button>
+                    <button type="button" class="chip-btn" data-filter-chip="graduation">Graduation</button>
+                    <button type="button" class="chip-btn" data-filter-chip="sports">Sports</button>
+                    <button type="button" class="chip-btn" data-filter-chip="cultural">Cultural</button>
+                </div>
+                <div class="col-lg-2">
+                    <select id="batchYearFilter" class="form-select">
+                        <option value="">All Years</option>
+                        <option value="2012">Batch 2012</option>
+                        <option value="2015">Batch 2015</option>
+                        <option value="2018">Batch 2018</option>
+                        <option value="2020">Batch 2020</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <select id="mediaTypeFilter" class="form-select">
+                        <option value="all">All Media</option>
+                        <option value="photo">Photos</option>
+                        <option value="video">Videos</option>
+                    </select>
+                </div>
+                <div class="col-lg-1">
+                    <button class="chip-btn w-100" id="viewToggle" type="button">Grid View</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="galleryMasonry" class="masonry">
+            <article class="gallery-item featured-tile" data-category="events" data-type="photo" data-year="2015" data-title="Reunion Stage Memories" data-src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=900" alt="reunion">
+                <div class="gallery-overlay"><strong>Reunion Stage Memories</strong><small class="d-block">Batch 2015</small></div>
+            </article>
+            <article class="gallery-item" data-category="graduation" data-type="photo" data-year="2018" data-title="Graduation Day Crowd" data-src="https://images.pexels.com/photos/1205651/pexels-photo-1205651.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/1205651/pexels-photo-1205651.jpeg?auto=compress&cs=tinysrgb&w=900" alt="graduation">
+                <div class="gallery-overlay"><strong>Graduation Day Crowd</strong><small class="d-block">Batch 2018</small></div>
+            </article>
+            <article class="gallery-item" data-category="cultural" data-type="photo" data-year="2012" data-title="Cultural Evening" data-src="https://images.pexels.com/photos/714699/pexels-photo-714699.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/714699/pexels-photo-714699.jpeg?auto=compress&cs=tinysrgb&w=900" alt="cultural">
+                <div class="gallery-overlay"><strong>Cultural Evening</strong><small class="d-block">Batch 2012</small></div>
+            </article>
+            <article class="gallery-item" data-category="sports" data-type="photo" data-year="2020" data-title="Sports Team Win" data-src="https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=900" alt="sports">
+                <div class="gallery-overlay"><strong>Sports Team Win</strong><small class="d-block">Batch 2020</small></div>
+            </article>
+            <article class="gallery-item" data-category="events" data-type="video" data-year="2015" data-title="Annual Reunion Clip" data-src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4">
+                <img src="https://images.pexels.com/photos/1184572/pexels-photo-1184572.jpeg?auto=compress&cs=tinysrgb&w=900" alt="video">
+                <div class="gallery-overlay"><strong>Annual Reunion Clip</strong><small class="d-block">Video • Batch 2015</small></div>
+            </article>
+            <article class="gallery-item" data-category="graduation" data-type="photo" data-year="2020" data-title="Cap Toss Moment" data-src="https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg?auto=compress&cs=tinysrgb&w=900" alt="cap toss">
+                <div class="gallery-overlay"><strong>Cap Toss Moment</strong><small class="d-block">Batch 2020</small></div>
+            </article>
+            <article class="gallery-item" data-category="events" data-type="photo" data-year="2018" data-title="Batch Meetup" data-src="https://images.pexels.com/photos/764681/pexels-photo-764681.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/764681/pexels-photo-764681.jpeg?auto=compress&cs=tinysrgb&w=900" alt="meetup">
+                <div class="gallery-overlay"><strong>Batch Meetup</strong><small class="d-block">Batch 2018</small></div>
+            </article>
+            <article class="gallery-item" data-category="sports" data-type="photo" data-year="2012" data-title="School Ground Tournament" data-src="https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=900" alt="ground">
+                <div class="gallery-overlay"><strong>School Ground Tournament</strong><small class="d-block">Batch 2012</small></div>
+            </article>
+            <article class="gallery-item" data-category="cultural" data-type="photo" data-year="2015" data-title="Festival Night" data-src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=900" alt="festival">
+                <div class="gallery-overlay"><strong>Festival Night</strong><small class="d-block">Batch 2015</small></div>
+            </article>
+            <article class="gallery-item" data-category="events" data-type="photo" data-year="2020" data-title="Networking Session" data-src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=900" alt="networking">
+                <div class="gallery-overlay"><strong>Networking Session</strong><small class="d-block">Batch 2020</small></div>
+            </article>
+            <article class="gallery-item" data-category="graduation" data-type="photo" data-year="2012" data-title="Diploma Moment" data-src="https://images.pexels.com/photos/7973120/pexels-photo-7973120.jpeg?auto=compress&cs=tinysrgb&w=1600">
+                <img src="https://images.pexels.com/photos/7973120/pexels-photo-7973120.jpeg?auto=compress&cs=tinysrgb&w=900" alt="diploma">
+                <div class="gallery-overlay"><strong>Diploma Moment</strong><small class="d-block">Batch 2012</small></div>
+            </article>
+            <article class="gallery-item" data-category="events" data-type="video" data-year="2018" data-title="Panel Talk Clip" data-src="https://samplelib.com/lib/preview/mp4/sample-10s.mp4">
+                <img src="https://images.pexels.com/photos/7648042/pexels-photo-7648042.jpeg?auto=compress&cs=tinysrgb&w=900" alt="panel video">
+                <div class="gallery-overlay"><strong>Panel Talk Clip</strong><small class="d-block">Video • Batch 2018</small></div>
+            </article>
+        </section>
+
+        <div id="gallerySentinel" class="text-center py-4">
+            <div class="spinner-border text-light"></div>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/public-layout :: publicFooter}"></th:block>
+
+<div class="lightbox" id="galleryLightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose"><i class="fa-solid fa-xmark me-1"></i>Close</button>
+    <button class="lightbox-nav prev" id="lightboxPrev"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="lightbox-nav next" id="lightboxNext"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="lightbox-shell">
+        <div class="lightbox-media">
+            <img id="lightboxImage" src="" alt="preview">
+            <video id="lightboxVideo" controls style="display:none;"></video>
+        </div>
+        <aside class="lightbox-side glass-card">
+            <h4 id="lightboxTitle" class="mb-2"></h4>
+            <p id="lightboxMeta" class="mb-3"></p>
+            <button class="chip-btn"><i class="fa-regular fa-heart me-1"></i>Like</button>
+        </aside>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script th:src="@{/js/public-ui.js}"></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>স্কুল অ্যাডমিন ড্যাশবোর্ড</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: schoolNav('dashboard')}"></th:block>
+<main class="app-main">
+    <div class="page-hero">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+                <h2 class="mb-1">School Admin Dashboard</h2>
+                <p class="mt-1 mb-0">Action-first control center for members, moderation, campaigns and batches.</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a th:href="@{/school/moderation}" class="btn btn-warning btn-sm">Review Queue</a>
+                <a th:href="@{/school/members/pending}" class="btn btn-light btn-sm">Approve Members</a>
+                <a th:href="@{/school/fund-campaign/create}" class="btn btn-light btn-sm">Create Campaign</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-success py-2 mb-0" th:if="${message}" th:text="${message}"></div>
+
+    <div class="kpi-grid">
+        <div class="kpi-card kpi-card--indigo">
+            <div class="kpi-label">Pending Queue</div>
+            <div class="kpi-value" th:attr="data-kpi-target=${totalPendingQueue}" th:text="${totalPendingQueue}">0</div>
+            <div class="kpi-trend down">Need immediate review</div>
+        </div>
+        <div class="kpi-card kpi-card--gold">
+            <div class="kpi-label">New Members (7d)</div>
+            <div class="kpi-value" th:attr="data-kpi-target=${newMembers7d}" th:text="${newMembers7d}">0</div>
+            <div class="kpi-trend up">Recent growth</div>
+        </div>
+        <div class="kpi-card kpi-card--teal">
+            <div class="kpi-label">Active Campaigns</div>
+            <div class="kpi-value" th:attr="data-kpi-target=${activeCampaigns}" th:text="${activeCampaigns}">0</div>
+            <div class="kpi-trend up">Raised: <span th:text="${activeCampaignRaised}">0</span></div>
+        </div>
+        <div class="kpi-card kpi-card--red">
+            <div class="kpi-label">Campaigns At Risk</div>
+            <div class="kpi-value" th:attr="data-kpi-target=${campaignAtRiskCount}" th:text="${campaignAtRiskCount}">0</div>
+            <div class="kpi-trend down">Below expected pace</div>
+        </div>
+        <div class="kpi-card kpi-card--indigo">
+            <div class="kpi-label">Upcoming Events</div>
+            <div class="kpi-value" th:attr="data-kpi-target=${upcomingEventsCount}" th:text="${upcomingEventsCount}">0</div>
+            <div class="kpi-trend up">School + batch events</div>
+        </div>
+        <div class="kpi-card kpi-card--teal">
+            <div class="kpi-label">Verified Alumni</div>
+            <div class="kpi-value" th:attr="data-kpi-target=${verifiedMembers}" th:text="${verifiedMembers}">0</div>
+            <div class="kpi-trend up">Identity trust score</div>
+        </div>
+        <div class="kpi-card kpi-card--gold">
+            <div class="kpi-label">Suspended Members</div>
+            <div class="kpi-value" th:attr="data-kpi-target=${suspendedMembers}" th:text="${suspendedMembers}">0</div>
+            <div class="kpi-trend down">Risk control</div>
+        </div>
+        <div class="kpi-card kpi-card--red">
+            <div class="kpi-label">Oldest Pending</div>
+            <div class="kpi-value" th:text="${oldestPendingLabel}">0m</div>
+            <div class="kpi-trend down">Moderation SLA watch</div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-2">
+        <div class="col-md-3">
+            <a th:href="@{/school/members/pending}" class="text-decoration-none">
+                <section class="section-card h-100">
+                    <div class="section-body">
+                        <div class="kpi-label">Pending Members</div>
+                        <div class="h4 mb-1" th:text="${pendingMembers}">0</div>
+                        <small class="text-muted">Approve or reject registrations</small>
+                    </div>
+                </section>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a th:href="@{/school/moderation(type='POSTS')}" class="text-decoration-none">
+                <section class="section-card h-100">
+                    <div class="section-body">
+                        <div class="kpi-label">Pending Posts</div>
+                        <div class="h4 mb-1" th:text="${pendingPosts}">0</div>
+                        <small class="text-muted">Moderate member-generated posts</small>
+                    </div>
+                </section>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a th:href="@{/school/moderation(type='GALLERY')}" class="text-decoration-none">
+                <section class="section-card h-100">
+                    <div class="section-body">
+                        <div class="kpi-label">Pending Gallery</div>
+                        <div class="h4 mb-1" th:text="${pendingGallery}">0</div>
+                        <small class="text-muted">Approve media submissions</small>
+                    </div>
+                </section>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a th:href="@{/school/batches}" class="text-decoration-none">
+                <section class="section-card h-100">
+                    <div class="section-body">
+                        <div class="kpi-label">Total Batches</div>
+                        <div class="h4 mb-1" th:text="${totalBatches}">0</div>
+                        <small class="text-muted">Create/manage batch operations</small>
+                    </div>
+                </section>
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-8">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>Member Funnel & Growth</h4>
+                </div>
+                <div class="section-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="chart-wrap">
+                                <canvas id="schoolFunnelChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="chart-wrap">
+                                <canvas id="schoolOpsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>Moderation SLA</h4>
+                </div>
+                <div class="section-body">
+                    <div class="impact-row">
+                        <span>Total Pending</span>
+                        <strong th:text="${totalPendingQueue}">0</strong>
+                    </div>
+                    <div class="impact-row">
+                        <span>Oldest pending age</span>
+                        <strong th:text="${oldestPendingLabel}">0m</strong>
+                    </div>
+                    <div class="impact-row">
+                        <span>Avg pending age</span>
+                        <strong th:text="${avgPendingMinutes + 'm'}">0m</strong>
+                    </div>
+                    <div class="impact-row">
+                        <span>Upcoming events</span>
+                        <strong th:text="${upcomingEventsCount}">0</strong>
+                    </div>
+                    <a th:href="@{/school/moderation}" class="btn btn-warning w-100 mt-2">Open Unified Queue</a>
+                    <hr>
+                    <h6 class="mb-2">Upcoming Events</h6>
+                    <div class="timeline-list">
+                        <div th:if="${upcomingEventsPreview.isEmpty()}" class="small text-muted">No upcoming event.</div>
+                        <div class="timeline-item" th:each="event : ${upcomingEventsPreview}">
+                            <div class="timeline-dot"></div>
+                            <div>
+                                <div class="fw-semibold" th:text="${event.title}"></div>
+                                <div class="small text-muted" th:text="${#temporals.format(event.eventDate, 'dd MMM, hh:mm a')}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="row mt-1 g-3">
+        <div class="col-lg-7">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>Batch Performance (Top)</h4>
+                    <a th:href="@{/school/batches}" class="btn btn-sm btn-outline-primary">Manage Batches</a>
+                </div>
+                <div class="section-body">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                            <tr>
+                                <th>Batch</th>
+                                <th>Members</th>
+                                <th>Pending</th>
+                                <th>Posts</th>
+                                <th>Events</th>
+                                <th>Active Score</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${batchPerformance.isEmpty()}">
+                                <td colspan="6" class="text-center text-muted">No batch data found.</td>
+                            </tr>
+                            <tr th:each="row : ${batchPerformance}">
+                                <td th:text="${row.batchName}">Batch</td>
+                                <td th:text="${row.members}">0</td>
+                                <td th:text="${row.pending}">0</td>
+                                <td th:text="${row.posts}">0</td>
+                                <td th:text="${row.events}">0</td>
+                                <td><span class="chip chip-ok" th:text="${row.score}">0</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-5">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>Campaign Risk Monitor</h4>
+                    <a th:href="@{/school/fund-campaigns}" class="btn btn-sm btn-outline-primary">All Campaigns</a>
+                </div>
+                <div class="section-body">
+                    <div th:if="${campaignRiskRows.isEmpty()}" class="text-muted">No active campaign.</div>
+                    <div th:each="row : ${campaignRiskRows}" class="post-teaser">
+                        <div class="d-flex justify-content-between align-items-start gap-2">
+                            <h6 class="mb-1" th:text="${row.title}">Campaign</h6>
+                            <span th:if="${row.risk}" class="chip chip-off">At Risk</span>
+                            <span th:unless="${row.risk}" class="chip chip-ok">On Track</span>
+                        </div>
+                        <div class="small mb-1">
+                            <span th:text="${row.raised}">0</span> / <span th:text="${row.target}">0</span>
+                        </div>
+                        <div class="progress mb-1" style="height:8px;">
+                            <div class="progress-bar" role="progressbar"
+                                 th:style="'width:' + ${row.progress} + '%'"
+                                 th:text="${row.progress + '%'}"></div>
+                        </div>
+                        <div class="small text-muted">Days left: <span th:text="${row.daysLeft}">0</span></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script th:inline="javascript">
+    const totalMembers = Number([[${totalMembers}]]);
+    const pendingMembers = Number([[${pendingMembers}]]);
+    const verifiedMembers = Number([[${verifiedMembers}]]);
+    const activeMembers = Number([[${funnelActive}]]);
+    const funnelRegistered = Number([[${funnelRegistered}]]);
+    const funnelApproved = Number([[${funnelApproved}]]);
+    const funnelVerified = Number([[${funnelVerified}]]);
+    const funnelCtx = document.getElementById('schoolFunnelChart');
+    if (funnelCtx) {
+        new Chart(funnelCtx, {
+            type: 'line',
+            data: {
+                labels: ['Registered', 'Approved', 'Verified', 'Active'],
+                datasets: [{
+                    data: [funnelRegistered, funnelApproved, funnelVerified, activeMembers],
+                    borderColor: '#5b5fef',
+                    backgroundColor: 'rgba(91,95,239,0.16)',
+                    fill: true,
+                    tension: 0.35,
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    const pendingPosts = Number([[${pendingPosts}]]);
+    const pendingGallery = Number([[${pendingGallery}]]);
+    const atRisk = Number([[${campaignAtRiskCount}]]);
+    const opsCtx = document.getElementById('schoolOpsChart');
+    if (opsCtx) {
+        new Chart(opsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Pending members', 'Pending posts', 'Pending gallery', 'At-risk campaigns', 'Verified'],
+                datasets: [{
+                    data: [pendingMembers, pendingPosts, pendingGallery, atRisk, verifiedMembers],
+                    backgroundColor: ['#d6a43a', '#ef4444', '#f97316', '#7c3aed', '#0ea5a4'],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+</script>
+</body>
+</html>

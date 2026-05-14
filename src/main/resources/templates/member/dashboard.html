@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মেম্বার ড্যাশবোর্ড</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: memberNav('dashboard', batch.name)}"></th:block>
+<main class="app-main">
+    <section class="member-hero">
+        <div class="member-hero__identity">
+            <div class="member-avatar" th:if="${user.profilePhotoUrl != null and !#strings.isEmpty(user.profilePhotoUrl)}">
+                <img th:src="${user.profilePhotoUrl}" alt="Profile">
+            </div>
+            <div class="member-avatar member-avatar--placeholder" th:unless="${user.profilePhotoUrl != null and !#strings.isEmpty(user.profilePhotoUrl)}">
+                <span th:text="${#strings.substring(user.fullName, 0, 1)}">A</span>
+            </div>
+            <div>
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <h3 class="mb-0" th:text="${'স্বাগতম, ' + user.fullName}">স্বাগতম</h3>
+                    <span class="chip chip-ok" th:if="${user.role != null and user.role.toString() == 'BATCH_CONTROLLER'}">CR + Member</span>
+                </div>
+                <p class="mb-1">স্কুল: <strong th:text="${user.school != null ? user.school.name : 'N/A'}"></strong></p>
+                <p class="mb-0">ব্যাচ: <strong th:text="${batch.name}"></strong></p>
+            </div>
+        </div>
+        <div class="member-hero__actions">
+            <a th:href="@{/member/profile/edit}" class="btn btn-primary">প্রোফাইল আপডেট</a>
+            <a th:href="@{/member/post/create}" class="btn btn-outline-primary">পোস্ট তৈরি</a>
+        </div>
+        <div class="member-hero__meter">
+            <div class="d-flex justify-content-between">
+                <small>Profile Completion</small>
+                <small><strong th:text="${user.profileCompletion + '%'}">0%</strong></small>
+            </div>
+            <div class="profile-meter mt-1">
+                <div class="fill" th:style="'width:' + ${user.profileCompletion} + '%'"></div>
+            </div>
+            <small th:if="${user.profileCompletion < 100}">
+                পরবর্তী মাইলস্টোন: <strong th:text="${nextProfileMilestone + '%'}"></strong>
+            </small>
+            <small th:if="${user.profileCompletion >= 100}" class="text-success">প্রোফাইল সম্পূর্ণ হয়েছে</small>
+        </div>
+    </section>
+
+    <div class="alert alert-success py-2 mb-0" th:if="${message}" th:text="${message}"></div>
+
+    <section class="focus-strip">
+        <span class="chip chip-warn" th:if="${dashboardAttentionCount > 0}">
+            প্রয়োজনীয় অ্যাকশন: <strong th:text="${dashboardAttentionCount}">0</strong>
+        </span>
+        <span class="chip chip-ok" th:if="${dashboardAttentionCount == 0}">
+            সব টাস্ক আপডেটেড
+        </span>
+        <span class="chip chip-off" th:if="${pendingRsvpCount > 0}">
+            RSVP বাকি: <strong th:text="${pendingRsvpCount}">0</strong>
+        </span>
+        <span class="chip chip-warn" th:if="${pendingPostApprovals + pendingGalleryApprovals > 0}">
+            Approval pending: <strong th:text="${pendingPostApprovals + pendingGalleryApprovals}">0</strong>
+        </span>
+        <span class="chip chip-ok" th:if="${activeBatchCampaignCount > 0}">
+            Active campaigns: <strong th:text="${activeBatchCampaignCount}">0</strong>
+        </span>
+    </section>
+
+    <div class="kpi-grid">
+        <div class="kpi-card kpi-card--indigo">
+            <div class="kpi-label">Batch Members</div>
+            <div class="kpi-value" data-kpi-target="0" th:attr="data-kpi-target=${memberCount}" th:text="${memberCount}">0</div>
+            <div class="kpi-trend up">Connected network</div>
+        </div>
+        <div class="kpi-card kpi-card--teal">
+            <div class="kpi-label">Recent Notices</div>
+            <div class="kpi-value" data-kpi-target="0" th:attr="data-kpi-target=${#lists.size(recentNotices)}" th:text="${#lists.size(recentNotices)}">0</div>
+            <div class="kpi-trend up">Pinned + latest</div>
+        </div>
+        <div class="kpi-card kpi-card--gold">
+            <div class="kpi-label">Upcoming Events</div>
+            <div class="kpi-value" data-kpi-target="0" th:attr="data-kpi-target=${upcomingEventsCount}" th:text="${upcomingEventsCount}">0</div>
+            <div class="kpi-trend up">Community feed</div>
+        </div>
+        <div class="kpi-card kpi-card--red">
+            <div class="kpi-label">Profile Gap</div>
+            <div class="kpi-value" data-kpi-target="0" th:attr="data-kpi-target=${profileGap}" th:text="${profileGap}">0</div>
+            <div class="kpi-trend down">Needs completion</div>
+        </div>
+        <div class="kpi-card kpi-card--indigo">
+            <div class="kpi-label">Unread Messages</div>
+            <div class="kpi-value" data-kpi-target="0" th:attr="data-kpi-target=${unreadMessages}" th:text="${unreadMessages}">0</div>
+            <div class="kpi-trend up">Inbox activity</div>
+        </div>
+        <div class="kpi-card kpi-card--teal">
+            <div class="kpi-label">Unread Notifications</div>
+            <div class="kpi-value" data-kpi-target="0" th:attr="data-kpi-target=${unreadNotifications}" th:text="${unreadNotifications}">0</div>
+            <div class="kpi-trend up">Attention needed</div>
+        </div>
+        <div class="kpi-card kpi-card--gold">
+            <div class="kpi-label">My Donations</div>
+            <div class="kpi-value" data-kpi-target="0" th:attr="data-kpi-target=${myDonationCount}" th:text="${myDonationCount}">0</div>
+            <div class="kpi-trend up">Contribution records</div>
+        </div>
+        <div class="kpi-card kpi-card--red">
+            <div class="kpi-label">Pending Approvals</div>
+            <div class="kpi-value" data-kpi-target="0" th:attr="data-kpi-target=${pendingPostApprovals + pendingGalleryApprovals}" th:text="${pendingPostApprovals + pendingGalleryApprovals}">0</div>
+            <div class="kpi-trend down">Posts + gallery</div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>Next Actions</h4>
+                </div>
+                <div class="section-body">
+                    <div class="d-grid gap-2 action-stack">
+                        <a th:if="${profileGap > 0}" th:href="@{/member/profile/edit}" class="btn btn-outline-primary btn-sm">
+                            Complete profile (<span th:text="${profileGap}">0</span>%)
+                        </a>
+                        <a th:if="${pendingRsvpCount > 0}" th:href="@{/member/events}" class="btn btn-outline-warning btn-sm">
+                            RSVP pending (<span th:text="${pendingRsvpCount}">0</span>)
+                        </a>
+                        <a th:if="${activeBatchCampaignCount > 0}" th:href="@{/member/fund-campaigns}" class="btn btn-outline-success btn-sm">
+                            Donate to batch campaign
+                        </a>
+                        <a th:if="${unreadMessages > 0}" th:href="@{/member/messages}" class="btn btn-outline-info btn-sm">
+                            Open unread messages
+                        </a>
+                        <a th:if="${pendingPostApprovals + pendingGalleryApprovals > 0}" th:href="@{/member/post/create}" class="btn btn-outline-secondary btn-sm">
+                            Review pending submissions
+                        </a>
+                        <div th:if="${profileGap == 0 and pendingRsvpCount == 0 and activeBatchCampaignCount == 0 and unreadMessages == 0 and (pendingPostApprovals + pendingGalleryApprovals) == 0}">
+                            সব আপডেটেড। নতুন পোস্ট বা গ্যালারি শেয়ার করতে পারেন।
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>Upcoming Events</h4>
+                    <a th:href="@{/member/events}" class="btn btn-sm btn-outline-primary">সব ইভেন্ট</a>
+                </div>
+                <div class="section-body">
+                    <div class="timeline-list">
+                        <div th:if="${upcomingEventsPreview.isEmpty()}" class="text-muted">এই মুহূর্তে নতুন ইভেন্ট নেই।</div>
+                        <div th:each="event : ${upcomingEventsPreview}" class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div>
+                                <strong th:text="${event.title}"></strong>
+                                <div class="small text-muted" th:text="${#temporals.format(event.eventDate, 'dd MMM yyyy, hh:mm a')}"></div>
+                                <div class="small" th:if="${event.eventLocation != null and !#strings.isEmpty(event.eventLocation)}" th:text="${event.eventLocation}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>My Impact Snapshot</h4>
+                </div>
+                <div class="section-body">
+                    <div class="impact-row">
+                        <span>Donations মোট</span>
+                        <strong th:text="${myDonationTotal}">0</strong>
+                    </div>
+                    <div class="impact-row">
+                        <span>Unread (msg + notif)</span>
+                        <strong th:text="${unreadMessages + unreadNotifications}">0</strong>
+                    </div>
+                    <div class="impact-row">
+                        <span>Pending RSVP</span>
+                        <strong th:text="${pendingRsvpCount}">0</strong>
+                    </div>
+                    <div class="impact-row">
+                        <span>Open campaigns</span>
+                        <strong th:text="${activeBatchCampaignCount}">0</strong>
+                    </div>
+                    <hr>
+                    <a th:href="@{/member/fund-campaigns}" class="btn btn-sm btn-outline-success w-100 mb-2">Campaigns দেখুন</a>
+                    <a th:href="@{/member/messages}" class="btn btn-sm btn-outline-info w-100">Messages দেখুন</a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-0">
+        <div class="col-xl-5">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>Batch Notices</h4>
+                </div>
+                <div class="section-body">
+                    <ul class="list-group list-group-flush">
+                        <li th:if="${recentNotices.isEmpty()}" class="list-group-item bg-transparent px-0">নোটিশ নেই।</li>
+                        <li th:each="notice : ${recentNotices}" class="list-group-item bg-transparent px-0">
+                            <div class="d-flex justify-content-between align-items-start gap-2">
+                                <strong th:text="${notice.title}"></strong>
+                                <span class="chip chip-warn" th:if="${notice.pinned}">Pinned</span>
+                            </div>
+                            <div class="small mb-1" th:text="${notice.content}"></div>
+                            <div class="small text-muted" th:text="${#temporals.format(notice.createdAt, 'dd MMM, hh:mm a')}"></div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <div class="col-xl-4">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>Community Posts</h4>
+                    <a th:href="@{/member/post/create}" class="btn btn-sm btn-outline-primary">নতুন পোস্ট</a>
+                </div>
+                <div class="section-body">
+                    <div th:if="${approvedPosts.isEmpty()}">কোনো পোস্ট নেই।</div>
+                    <div th:each="post : ${approvedPosts}" class="post-teaser">
+                        <h6 th:text="${post.title}"></h6>
+                        <p class="mb-1" th:text="${post.content}"></p>
+                        <div class="small text-muted" th:text="${post.type}"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-xl-3">
+            <section class="section-card h-100">
+                <div class="section-head">
+                    <h4>Batch Spotlight</h4>
+                    <a th:href="@{/member/directory}" class="btn btn-sm btn-outline-primary">সব দেখুন</a>
+                </div>
+                <div class="section-body">
+                    <div th:if="${spotlightMembers.isEmpty()}" class="text-muted">নতুন ব্যাচমেট যোগ হলে এখানে দেখা যাবে।</div>
+                    <div th:each="member : ${spotlightMembers}" class="spotlight-item">
+                        <div class="spotlight-avatar" th:if="${member.profilePhotoUrl != null and !#strings.isEmpty(member.profilePhotoUrl)}">
+                            <img th:src="${member.profilePhotoUrl}" alt="Member">
+                        </div>
+                        <div class="spotlight-avatar spotlight-avatar--placeholder" th:unless="${member.profilePhotoUrl != null and !#strings.isEmpty(member.profilePhotoUrl)}">
+                            <span th:text="${#strings.substring(member.fullName, 0, 1)}">M</span>
+                        </div>
+                        <div class="spotlight-meta">
+                            <div class="fw-semibold" th:text="${member.fullName}"></div>
+                            <div class="small text-muted" th:text="${member.jobTitle != null and !#strings.isEmpty(member.jobTitle) ? member.jobTitle : 'Profile pending'}"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

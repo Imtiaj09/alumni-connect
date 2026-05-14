@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Alumni Connect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/public-ui.css}">
+</head>
+<body class="public-page">
+<th:block th:replace="~{fragments/public-layout :: publicCursor}"></th:block>
+
+<main class="auth-shell">
+    <section class="auth-brand-pane">
+        <div class="auth-pane-content">
+            <a th:href="@{/}" class="public-brand route-link fs-4"><span class="brand-orb"></span>Alumni Connect</a>
+            <h1 class="mt-4">Join Your Alumni Network</h1>
+            <p class="mt-2">Complete the guided onboarding and submit your verification request.</p>
+
+            <div class="row g-2 mt-4">
+                <div class="col-6"><div class="glass-card p-2 text-center"><strong>Verified</strong><br><small>Identity Flow</small></div></div>
+                <div class="col-6"><div class="glass-card p-2 text-center"><strong>Role-Based</strong><br><small>Access Control</small></div></div>
+                <div class="col-6"><div class="glass-card p-2 text-center"><strong>Batch First</strong><br><small>Community Design</small></div></div>
+                <div class="col-6"><div class="glass-card p-2 text-center"><strong>Secure</strong><br><small>Moderated Content</small></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="auth-form-pane">
+        <div class="auth-card">
+            <h3 class="mb-1">Create Account</h3>
+            <p class="mb-3">Multi-step onboarding for alumni members</p>
+
+            <div th:if="${param.success}" class="alert alert-success py-2">Registration submitted. Wait for approval.</div>
+            <div th:if="${param.error == 'exists'}" class="alert alert-danger py-2">Email already exists.</div>
+            <div th:if="${param.error == 'invalid_form'}" class="alert alert-danger py-2">Please complete required fields.</div>
+            <div th:if="${param.error == 'batch_school_mismatch'}" class="alert alert-danger py-2">Selected batch does not match selected school.</div>
+
+            <div id="registerWizard">
+                <div class="wizard-progress">
+                    <div class="wizard-step active"><div class="wizard-node">1</div><small>Role</small></div>
+                    <div class="wizard-step"><div class="wizard-node">2</div><small>Profile</small></div>
+                    <div class="wizard-step"><div class="wizard-node">3</div><small>School</small></div>
+                    <div class="wizard-step"><div class="wizard-node">4</div><small>About</small></div>
+                    <div class="wizard-step"><div class="wizard-node">5</div><small>Review</small></div>
+                </div>
+
+                <form th:action="@{/register}" method="post" th:object="${registrationForm}" id="registerForm">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <input type="hidden" id="accountType" name="accountType" value="ALUMNI_MEMBER" required>
+
+                    <section class="wizard-pane active">
+                        <div class="role-cards mb-3">
+                            <article class="role-card active" data-role="ALUMNI_MEMBER">
+                                <h5><i class="fa-solid fa-user-graduate me-2"></i>Alumni Member</h5>
+                                <p class="mb-0">Join your school and batch community.</p>
+                            </article>
+                            <article class="role-card" data-role="SCHOOL_ADMIN_REQUEST">
+                                <h5><i class="fa-solid fa-school me-2"></i>School Admin</h5>
+                                <p class="mb-0">For admin requests, contact the platform owner.</p>
+                            </article>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button class="cta-main" type="button" data-next>Continue <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </section>
+
+                    <section class="wizard-pane">
+                        <div class="floating-group">
+                            <input id="regFullName" type="text" th:field="*{fullName}" placeholder=" " required>
+                            <label for="regFullName">Full Name</label>
+                        </div>
+                        <div class="floating-group">
+                            <input id="regEmail" type="email" th:field="*{email}" placeholder=" " required>
+                            <label for="regEmail">Email Address</label>
+                        </div>
+                        <div class="floating-group">
+                            <input id="regPhone" type="tel" name="phoneDisplay" placeholder=" " required>
+                            <label for="regPhone">Phone Number</label>
+                        </div>
+                        <div class="floating-group">
+                            <input id="regPassword" type="password" th:field="*{password}" placeholder=" " required>
+                            <label for="regPassword">Password</label>
+                        </div>
+                        <div class="pwd-meter mb-1"><div class="fill" id="pwdMeterFill"></div></div>
+                        <small class="d-block mb-3">Strength: <strong id="pwdMeterText">Weak</strong></small>
+                        <div class="d-flex justify-content-between">
+                            <button class="chip-btn" type="button" data-prev>Back</button>
+                            <button class="cta-main" type="button" data-next>Continue <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </section>
+
+                    <section class="wizard-pane">
+                        <div class="floating-group">
+                            <select id="schoolSelect" th:field="*{schoolId}" required>
+                                <option value="">Select School</option>
+                                <option th:each="school : ${schools}" th:value="${school.id}" th:text="${school.name}"></option>
+                            </select>
+                            <label for="schoolSelect">School</label>
+                        </div>
+                        <div class="floating-group">
+                            <select id="batchSelect" th:field="*{batchId}" required>
+                                <option value="">Select Batch</option>
+                                <option th:each="batch : ${batches}"
+                                        th:value="${batch.id}"
+                                        th:attr="data-school=${batch.school != null ? batch.school.id : ''}"
+                                        th:text="${batch.name + ' (' + batch.batchYear + ')'}"></option>
+                            </select>
+                            <label for="batchSelect">Batch Year</label>
+                        </div>
+                        <div class="floating-group">
+                            <input id="regClassSection" type="text" th:field="*{classSection}" placeholder=" " required>
+                            <label for="regClassSection">Class Section</label>
+                        </div>
+                        <div class="floating-group">
+                            <input id="regRollNumber" type="text" th:field="*{rollNumber}" placeholder=" " required>
+                            <label for="regRollNumber">Roll Number</label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="chip-btn" type="button" data-prev>Back</button>
+                            <button class="cta-main" type="button" data-next>Continue <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </section>
+
+                    <section class="wizard-pane">
+                        <div class="floating-group">
+                            <textarea id="regBio" name="bio" rows="4" placeholder=" " required></textarea>
+                            <label for="regBio">Short Bio</label>
+                        </div>
+                        <div class="floating-group">
+                            <input id="regOccupation" type="text" name="occupationDisplay" placeholder=" " required>
+                            <label for="regOccupation">Current Occupation</label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="chip-btn" type="button" data-prev>Back</button>
+                            <button class="cta-main" type="button" data-next>Continue <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </section>
+
+                    <section class="wizard-pane">
+                        <h5 class="mb-2">Review Your Information</h5>
+                        <div id="reviewSummary" class="glass-card p-3 mb-3"></div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                            <label class="form-check-label" for="termsCheck">I agree to Terms and Privacy Policy</label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="chip-btn" type="button" data-prev>Back</button>
+                            <button class="cta-main" type="submit">Create Account <i class="fa-solid fa-sparkles"></i></button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+            <p class="mt-3 mb-0">Already have an account? <a th:href="@{/login}" class="route-link">Login</a></p>
+        </div>
+    </section>
+</main>
+
+<div class="celebrate-overlay" id="celebrateOverlay">
+    <div>
+        <div class="fs-1 mb-2"><i class="fa-regular fa-circle-check text-success"></i></div>
+        <h3>Welcome to the Family</h3>
+        <p>Your request is being submitted.</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script th:src="@{/js/public-ui.js}"></script>
+</body>
+</html>

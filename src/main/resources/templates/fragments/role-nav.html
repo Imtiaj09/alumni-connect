@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="ownerNav(activeKey)">
+    <div class="app-topbar bg-dark">
+        <strong>ওনার প্যানেল</strong>
+        <div class="d-flex gap-2">
+            <button class="btn btn-light btn-sm js-theme-toggle" type="button" aria-label="Toggle theme">Theme</button>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#ownerMenu">মেনু</button>
+        </div>
+    </div>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="ownerMenu">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">ওনার মেনু</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="sidebar-masthead">
+                <div class="sidebar-dot"></div>
+                <div>
+                    <strong>Owner Console</strong>
+                    <small>Platform mission control</small>
+                </div>
+            </div>
+            <a class="sidebar-link" th:classappend="${activeKey == 'dashboard'} ? ' active' : ''" th:href="@{/owner/dashboard}">ড্যাশবোর্ড</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'create-school'} ? ' active' : ''" th:href="@{/owner/school/create}">নতুন স্কুল</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'admins'} ? ' active' : ''" th:href="@{/owner/admins}">সব অ্যাডমিন</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'analytics'} ? ' active' : ''" th:href="@{/owner/analytics}">অ্যানালিটিক্স</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'logs'} ? ' active' : ''" th:href="@{/owner/activity-logs}">অ্যাক্টিভিটি লগ</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'partnerships'} ? ' active' : ''" th:href="@{/owner/partnerships}">পার্টনারশিপ</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'subscriptions'} ? ' active' : ''" th:href="@{/owner/subscriptions}">সাবস্ক্রিপশন</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'permissions'} ? ' active' : ''" th:href="@{/owner/permissions}">পারমিশন</a>
+            <form class="sidebar-logout-form" th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button class="sidebar-link sidebar-logout-btn" type="submit">লগআউট</button>
+            </form>
+        </div>
+    </div>
+    <aside class="app-sidebar bg-dark">
+        <a class="sidebar-brand" th:href="@{/owner/dashboard}">ওনার প্যানেল</a>
+        <button class="btn btn-sm btn-outline-light w-100 mb-2 js-theme-toggle" type="button">Theme</button>
+        <a class="sidebar-link" th:classappend="${activeKey == 'dashboard'} ? ' active' : ''" th:href="@{/owner/dashboard}">ড্যাশবোর্ড</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'create-school'} ? ' active' : ''" th:href="@{/owner/school/create}">নতুন স্কুল</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'admins'} ? ' active' : ''" th:href="@{/owner/admins}">সব অ্যাডমিন</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'analytics'} ? ' active' : ''" th:href="@{/owner/analytics}">অ্যানালিটিক্স</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'logs'} ? ' active' : ''" th:href="@{/owner/activity-logs}">অ্যাক্টিভিটি লগ</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'partnerships'} ? ' active' : ''" th:href="@{/owner/partnerships}">পার্টনারশিপ</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'subscriptions'} ? ' active' : ''" th:href="@{/owner/subscriptions}">সাবস্ক্রিপশন</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'permissions'} ? ' active' : ''" th:href="@{/owner/permissions}">পারমিশন</a>
+        <form class="sidebar-logout-form" th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button class="sidebar-link sidebar-logout-btn" type="submit">লগআউট</button>
+        </form>
+    </aside>
+    <script th:src="@{/js/dashboard-ui.js}"></script>
+</th:block>
+
+<th:block th:fragment="schoolNav(activeKey)">
+    <div class="app-topbar bg-primary">
+        <div class="d-flex align-items-center gap-2">
+            <img th:if="${navSchoolLogoUrl != null and !#strings.isEmpty(navSchoolLogoUrl)}" th:src="${navSchoolLogoUrl}" alt="School Logo" class="nav-school-logo">
+            <strong th:text="${navSchoolName != null ? navSchoolName : 'স্কুল পোর্টাল'}">স্কুল পোর্টাল</strong>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-light btn-sm js-theme-toggle" type="button" aria-label="Toggle theme">Theme</button>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#schoolMenu">মেনু</button>
+        </div>
+    </div>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="schoolMenu">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">স্কুল মেনু</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="sidebar-masthead">
+                <div class="sidebar-dot"></div>
+                <div>
+                    <strong>School Hub</strong>
+                    <small>Admin operations</small>
+                </div>
+            </div>
+            <a class="sidebar-link" th:classappend="${activeKey == 'dashboard'} ? ' active' : ''" th:href="@{/school/dashboard}">ড্যাশবোর্ড</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'profile'} ? ' active' : ''" th:href="@{/school/profile}">স্কুল প্রোফাইল</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'batches'} ? ' active' : ''" th:href="@{/school/batches}">ব্যাচ</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'members'} ? ' active' : ''" th:href="@{/school/members}">সকল সদস্য</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'pending-members'} ? ' active' : ''" th:href="@{/school/members/pending}">সদস্য অনুমোদন</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'moderation'} ? ' active' : ''" th:href="@{/school/moderation}">মডারেশন কিউ</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'announcements'} ? ' active' : ''" th:href="@{/school/announcements}">ঘোষণা</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'funds'} ? ' active' : ''" th:href="@{/school/fund-campaigns}">তহবিল</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'gallery'} ? ' active' : ''" th:href="@{/school/gallery}">গ্যালারি</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'analytics'} ? ' active' : ''" th:href="@{/school/analytics}">অ্যানালিটিক্স</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'cr-permissions'} ? ' active' : ''" th:href="@{/school/cr-permissions}">CR পারমিশন</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'bulk-import'} ? ' active' : ''" th:href="@{/school/bulk-import}">বাল্ক ইম্পোর্ট</a>
+            <form class="sidebar-logout-form" th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button class="sidebar-link sidebar-logout-btn" type="submit">লগআউট</button>
+            </form>
+        </div>
+    </div>
+    <aside class="app-sidebar bg-primary">
+        <a class="sidebar-brand d-flex align-items-center gap-2" th:href="@{/school/dashboard}">
+            <img th:if="${navSchoolLogoUrl != null and !#strings.isEmpty(navSchoolLogoUrl)}" th:src="${navSchoolLogoUrl}" alt="School Logo" class="nav-school-logo">
+            <span th:text="${navSchoolName != null ? navSchoolName : 'স্কুল পোর্টাল'}">স্কুল পোর্টাল</span>
+        </a>
+        <button class="btn btn-sm btn-outline-light w-100 mb-2 js-theme-toggle" type="button">Theme</button>
+        <a class="sidebar-link" th:classappend="${activeKey == 'dashboard'} ? ' active' : ''" th:href="@{/school/dashboard}">ড্যাশবোর্ড</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'profile'} ? ' active' : ''" th:href="@{/school/profile}">স্কুল প্রোফাইল</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'batches'} ? ' active' : ''" th:href="@{/school/batches}">ব্যাচ</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'members'} ? ' active' : ''" th:href="@{/school/members}">সকল সদস্য</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'pending-members'} ? ' active' : ''" th:href="@{/school/members/pending}">সদস্য অনুমোদন</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'moderation'} ? ' active' : ''" th:href="@{/school/moderation}">মডারেশন কিউ</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'announcements'} ? ' active' : ''" th:href="@{/school/announcements}">ঘোষণা</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'funds'} ? ' active' : ''" th:href="@{/school/fund-campaigns}">তহবিল</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'gallery'} ? ' active' : ''" th:href="@{/school/gallery}">গ্যালারি</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'analytics'} ? ' active' : ''" th:href="@{/school/analytics}">অ্যানালিটিক্স</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'cr-permissions'} ? ' active' : ''" th:href="@{/school/cr-permissions}">CR পারমিশন</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'bulk-import'} ? ' active' : ''" th:href="@{/school/bulk-import}">বাল্ক ইম্পোর্ট</a>
+        <form class="sidebar-logout-form" th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button class="sidebar-link sidebar-logout-btn" type="submit">লগআউট</button>
+        </form>
+    </aside>
+    <script th:src="@{/js/dashboard-ui.js}"></script>
+</th:block>
+
+<th:block th:fragment="memberNav(activeKey, batchName)">
+    <div class="app-topbar bg-info">
+        <div class="d-flex align-items-center gap-2">
+            <img th:if="${navSchoolLogoUrl != null and !#strings.isEmpty(navSchoolLogoUrl)}" th:src="${navSchoolLogoUrl}" alt="School Logo" class="nav-school-logo">
+            <strong th:text="${navSchoolName != null ? navSchoolName : 'মেম্বার পোর্টাল'}">মেম্বার পোর্টাল</strong>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-light btn-sm js-theme-toggle" type="button" aria-label="Toggle theme">Theme</button>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#memberMenu">মেনু</button>
+        </div>
+    </div>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="memberMenu">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">মেম্বার মেনু</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="sidebar-masthead">
+                <div class="sidebar-dot"></div>
+                <div>
+                    <strong>Member Space</strong>
+                    <small>Alumni network</small>
+                </div>
+            </div>
+            <a class="sidebar-link" th:classappend="${activeKey == 'dashboard'} ? ' active' : ''" th:href="@{/member/dashboard}">হোম</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'directory'} ? ' active' : ''" th:href="@{/member/directory}">সদস্য তালিকা</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'profile'} ? ' active' : ''" th:href="@{/member/profile/edit}">প্রোফাইল এডিট</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'post-create'} ? ' active' : ''" th:href="@{/member/post/create}">পোস্ট তৈরি</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'events'} ? ' active' : ''" th:href="@{/member/events}">ইভেন্ট</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'messages'} ? ' active' : ''" th:href="@{/member/messages}">মেসেজ</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'notifications'} ? ' active' : ''" th:href="@{/member/notifications}">নোটিফিকেশন</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'funds'} ? ' active' : ''" th:href="@{/member/fund-campaigns}">তহবিল</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'gallery'} ? ' active' : ''" th:href="@{/member/gallery}">গ্যালারি</a>
+            <form class="sidebar-logout-form" th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button class="sidebar-link sidebar-logout-btn" type="submit">লগআউট</button>
+            </form>
+        </div>
+    </div>
+    <aside class="app-sidebar bg-info">
+        <a class="sidebar-brand d-flex align-items-center gap-2" th:href="@{/member/dashboard}">
+            <img th:if="${navSchoolLogoUrl != null and !#strings.isEmpty(navSchoolLogoUrl)}" th:src="${navSchoolLogoUrl}" alt="School Logo" class="nav-school-logo">
+            <span>আমার ব্যাচ: <span th:text="${batchName}"></span></span>
+        </a>
+        <button class="btn btn-sm btn-outline-light w-100 mb-2 js-theme-toggle" type="button">Theme</button>
+        <a class="sidebar-link" th:classappend="${activeKey == 'dashboard'} ? ' active' : ''" th:href="@{/member/dashboard}">হোম</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'directory'} ? ' active' : ''" th:href="@{/member/directory}">সদস্য তালিকা</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'profile'} ? ' active' : ''" th:href="@{/member/profile/edit}">প্রোফাইল এডিট</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'post-create'} ? ' active' : ''" th:href="@{/member/post/create}">পোস্ট তৈরি</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'events'} ? ' active' : ''" th:href="@{/member/events}">ইভেন্ট</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'messages'} ? ' active' : ''" th:href="@{/member/messages}">মেসেজ</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'notifications'} ? ' active' : ''" th:href="@{/member/notifications}">নোটিফিকেশন</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'funds'} ? ' active' : ''" th:href="@{/member/fund-campaigns}">তহবিল</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'gallery'} ? ' active' : ''" th:href="@{/member/gallery}">গ্যালারি</a>
+        <form class="sidebar-logout-form" th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button class="sidebar-link sidebar-logout-btn" type="submit">লগআউট</button>
+        </form>
+    </aside>
+    <script th:src="@{/js/dashboard-ui.js}"></script>
+</th:block>
+
+<th:block th:fragment="batchNav(activeKey, batchName)">
+    <div class="app-topbar bg-success">
+        <div class="d-flex align-items-center gap-2">
+            <img th:if="${navSchoolLogoUrl != null and !#strings.isEmpty(navSchoolLogoUrl)}" th:src="${navSchoolLogoUrl}" alt="School Logo" class="nav-school-logo">
+            <strong th:text="${navSchoolName != null ? navSchoolName : 'ব্যাচ কন্ট্রোল'}">ব্যাচ কন্ট্রোল</strong>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-light btn-sm js-theme-toggle" type="button" aria-label="Toggle theme">Theme</button>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#batchMenu">মেনু</button>
+        </div>
+    </div>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="batchMenu">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">ব্যাচ মেনু</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="sidebar-masthead">
+                <div class="sidebar-dot"></div>
+                <div>
+                    <strong>CR Workspace</strong>
+                    <small>Batch moderation</small>
+                </div>
+            </div>
+            <a class="sidebar-link" th:classappend="${activeKey == 'dashboard'} ? ' active' : ''" th:href="@{/batch/dashboard}">ড্যাশবোর্ড</a>
+            <a class="sidebar-link" th:classappend="${activeKey == 'notices'} ? ' active' : ''" th:href="@{/batch/notices}">নোটিশ</a>
+            <a class="sidebar-link"
+               th:if="${crPermissions != null and crPermissions.canApprovePosts}"
+               th:classappend="${activeKey == 'posts'} ? ' active' : ''"
+               th:href="@{/batch/posts/pending}">পোস্ট মডারেশন</a>
+            <a class="sidebar-link"
+               th:if="${crPermissions != null and crPermissions.canUploadGallery}"
+               th:classappend="${activeKey == 'gallery'} ? ' active' : ''"
+               th:href="@{/batch/gallery}">গ্যালারি</a>
+            <a class="sidebar-link"
+               th:if="${crPermissions != null and crPermissions.canModerateMembers}"
+               th:classappend="${activeKey == 'members'} ? ' active' : ''"
+               th:href="@{/batch/members}">মেম্বার মডারেশন</a>
+            <hr class="my-2">
+            <div class="small text-muted mb-1">Member Features</div>
+            <a class="sidebar-link" th:href="@{/member/dashboard}">মেম্বার ড্যাশবোর্ড</a>
+            <a class="sidebar-link" th:href="@{/member/directory}">সদস্য তালিকা</a>
+            <a class="sidebar-link" th:href="@{/member/profile/edit}">প্রোফাইল এডিট</a>
+            <a class="sidebar-link" th:href="@{/member/events}">ইভেন্ট</a>
+            <a class="sidebar-link" th:href="@{/member/messages}">মেসেজ</a>
+            <a class="sidebar-link" th:href="@{/member/fund-campaigns}">তহবিল</a>
+            <a class="sidebar-link" th:href="@{/member/gallery}">গ্যালারি</a>
+            <form class="sidebar-logout-form" th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button class="sidebar-link sidebar-logout-btn" type="submit">লগআউট</button>
+            </form>
+        </div>
+    </div>
+    <aside class="app-sidebar bg-success">
+        <a class="sidebar-brand d-flex align-items-center gap-2" th:href="@{/batch/dashboard}">
+            <img th:if="${navSchoolLogoUrl != null and !#strings.isEmpty(navSchoolLogoUrl)}" th:src="${navSchoolLogoUrl}" alt="School Logo" class="nav-school-logo">
+            <span>আমার ব্যাচ: <span th:text="${batchName}"></span></span>
+        </a>
+        <button class="btn btn-sm btn-outline-light w-100 mb-2 js-theme-toggle" type="button">Theme</button>
+        <a class="sidebar-link" th:classappend="${activeKey == 'dashboard'} ? ' active' : ''" th:href="@{/batch/dashboard}">ড্যাশবোর্ড</a>
+        <a class="sidebar-link" th:classappend="${activeKey == 'notices'} ? ' active' : ''" th:href="@{/batch/notices}">নোটিশ</a>
+        <a class="sidebar-link"
+           th:if="${crPermissions != null and crPermissions.canApprovePosts}"
+           th:classappend="${activeKey == 'posts'} ? ' active' : ''"
+           th:href="@{/batch/posts/pending}">পোস্ট মডারেশন</a>
+        <a class="sidebar-link"
+           th:if="${crPermissions != null and crPermissions.canUploadGallery}"
+           th:classappend="${activeKey == 'gallery'} ? ' active' : ''"
+           th:href="@{/batch/gallery}">গ্যালারি</a>
+        <a class="sidebar-link"
+           th:if="${crPermissions != null and crPermissions.canModerateMembers}"
+           th:classappend="${activeKey == 'members'} ? ' active' : ''"
+           th:href="@{/batch/members}">মেম্বার মডারেশন</a>
+        <hr class="my-2">
+        <div class="small text-muted mb-1">Member Features</div>
+        <a class="sidebar-link" th:href="@{/member/dashboard}">মেম্বার ড্যাশবোর্ড</a>
+        <a class="sidebar-link" th:href="@{/member/directory}">সদস্য তালিকা</a>
+        <a class="sidebar-link" th:href="@{/member/profile/edit}">প্রোফাইল এডিট</a>
+        <a class="sidebar-link" th:href="@{/member/events}">ইভেন্ট</a>
+        <a class="sidebar-link" th:href="@{/member/messages}">মেসেজ</a>
+        <a class="sidebar-link" th:href="@{/member/fund-campaigns}">তহবিল</a>
+        <a class="sidebar-link" th:href="@{/member/gallery}">গ্যালারি</a>
+        <form class="sidebar-logout-form" th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button class="sidebar-link sidebar-logout-btn" type="submit">লগআউট</button>
+        </form>
+    </aside>
+    <script th:src="@{/js/dashboard-ui.js}"></script>
+</th:block>
+</body>
+</html>

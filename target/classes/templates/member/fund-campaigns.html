@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>তহবিল প্রচারাভিযান</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: memberNav('funds', 'মেম্বার')}"></th:block>
+<main class="app-main">
+<div class="page-hero">
+    <h2>Fund Campaigns</h2>
+    <p class="mt-1">স্কুল ও ব্যাচভিত্তিক তহবিল ক্যাম্পেইনে দ্রুত অনুদান দিন।</p>
+</div>
+    <p class="text-success" th:if="${message}" th:text="${message}"></p>
+
+    <section class="section-card mb-3">
+        <div class="section-head"><h4>স্কুল-ব্যাপী ক্যাম্পেইন</h4></div>
+        <div class="section-body">
+            <div class="row g-3">
+                <div class="col-md-6" th:each="campaign : ${schoolCampaigns}">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 th:text="${campaign.title}"></h5>
+                            <p th:text="${campaign.description}"></p>
+                            <p class="mb-1">
+                                <strong>লক্ষ্য:</strong> <span th:text="${campaign.targetAmount}"></span>
+                            </p>
+                            <p>
+                                <strong>সংগৃহীত:</strong> <span th:text="${campaign.collectedAmount}"></span>
+                            </p>
+                            <a class="btn btn-primary btn-sm" th:href="@{/member/fund-campaign/{id}/donate(id=${campaign.id})}">অনুদান দিন</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <div class="section-head"><h4>ব্যাচ ক্যাম্পেইন</h4></div>
+        <div class="section-body">
+            <div class="row g-3">
+                <div class="col-md-6" th:each="campaign : ${batchCampaigns}">
+                    <div class="card h-100 border-info">
+                        <div class="card-body">
+                            <h5 th:text="${campaign.title}"></h5>
+                            <p th:text="${campaign.description}"></p>
+                            <p class="mb-1">
+                                <strong>লক্ষ্য:</strong> <span th:text="${campaign.targetAmount}"></span>
+                            </p>
+                            <p>
+                                <strong>সংগৃহীত:</strong> <span th:text="${campaign.collectedAmount}"></span>
+                            </p>
+                            <a class="btn btn-info btn-sm text-white" th:href="@{/member/fund-campaign/{id}/donate(id=${campaign.id})}">অনুদান দিন</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সব স্কুল অ্যাডমিন</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+    <th:block th:replace="~{fragments/role-nav :: ownerNav('admins')}"></th:block>
+<main class="app-main">
+<div class="page-hero">
+    <h2>All School Admins</h2>
+    <p class="mt-1">সব প্রতিষ্ঠানের অ্যাডমিন অ্যাকাউন্টের কেন্দ্রীয় তালিকা।</p>
+</div>
+<section class="section-card">
+    <div class="section-head">
+        <h4>Admin Directory</h4>
+    </div>
+    <div class="section-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped mb-0">
+                <thead>
+                <tr>
+                    <th>নাম</th>
+                    <th>ইমেইল</th>
+                    <th>স্কুল</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="admin : ${admins}">
+                    <td th:text="${admin.fullName}"></td>
+                    <td th:text="${admin.email}"></td>
+                    <td th:text="${admin.school != null ? admin.school.name : 'N/A'}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Connect | Reconnect Inspire Belong</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/public-ui.css}">
+</head>
+<body class="public-page d-flex flex-column">
+<th:block th:replace="~{fragments/public-layout :: publicCursor}"></th:block>
+<th:block th:replace="~{fragments/public-layout :: publicNav('home')}"></th:block>
+
+<header class="hero-mesh">
+    <canvas id="heroParticles" class="hero-particles"></canvas>
+    <div class="hero-overlay"></div>
+    <div class="container hero-inner">
+        <h1 class="hero-title">
+            <span class="hero-word">Reconnect.</span>
+            <span class="hero-word">Inspire.</span>
+            <span class="hero-word">Belong.</span>
+        </h1>
+        <p class="hero-sub">
+            Alumni Connect brings schools and former students together through events, stories, campaigns, and verified networks.
+        </p>
+        <div class="hero-actions">
+            <a th:href="@{/register}" class="cta-main route-link">
+                Get Started Free <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <button type="button" class="cta-glass" data-bs-toggle="modal" data-bs-target="#demoModal">
+                <i class="fa-regular fa-circle-play"></i> Watch Demo
+            </button>
+        </div>
+        <div class="hero-stat-bar glass-card" id="heroStats">
+            <div class="hero-stat-item"><strong class="counter" data-target="500">0</strong><small>Schools</small></div>
+            <div class="hero-stat-item"><strong class="counter" data-target="120000">0</strong><small>Alumni</small></div>
+            <div class="hero-stat-item"><strong class="counter" data-target="2000">0</strong><small>Batches</small></div>
+            <div class="hero-stat-item"><strong class="counter" data-target="5000000">0</strong><small>Donated BDT</small></div>
+        </div>
+    </div>
+    <div class="diag-divider"></div>
+</header>
+
+<main>
+    <section class="public-section">
+        <div class="container">
+            <div class="section-headline" data-aos="fade-up">
+                <h2>Why Alumni Connect Works</h2>
+                <div class="headline-line"></div>
+            </div>
+            <div class="bento-grid">
+                <article class="bento-card bento-featured" data-aos="zoom-in">
+                    <span class="icon-badge"><i class="fa-solid fa-users-viewfinder"></i></span>
+                    <h4>Unified Community Platform</h4>
+                    <p>Run alumni operations from one place: batches, moderated posts, reunions, funds, and school memory archives.</p>
+                    <div class="row mt-3 g-2">
+                        <div class="col-6"><div class="glass-card p-2">Role based dashboards</div></div>
+                        <div class="col-6"><div class="glass-card p-2">Permission engine</div></div>
+                    </div>
+                </article>
+                <article class="bento-card" data-aos="fade-up" data-aos-delay="60">
+                    <span class="icon-badge"><i class="fa-solid fa-envelope-open-text"></i></span>
+                    <h5>Notices and Messaging</h5>
+                    <p>Batch communication with direct message support.</p>
+                </article>
+                <article class="bento-card" data-aos="fade-up" data-aos-delay="120">
+                    <span class="icon-badge"><i class="fa-solid fa-hand-holding-heart"></i></span>
+                    <h5>Donation Campaigns</h5>
+                    <p>Track targets, collections, and donor history clearly.</p>
+                </article>
+                <article class="bento-card" data-aos="fade-up" data-aos-delay="180">
+                    <span class="icon-badge"><i class="fa-solid fa-images"></i></span>
+                    <h5>Media Galleries</h5>
+                    <p>School and batch memories with approval workflows.</p>
+                </article>
+                <article class="bento-card" data-aos="fade-up" data-aos-delay="240">
+                    <span class="icon-badge"><i class="fa-solid fa-chart-line"></i></span>
+                    <h5>Live Analytics</h5>
+                    <p>Owner, school, and CR metrics for better decisions.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="public-section">
+        <div class="container">
+            <div class="section-headline" data-aos="fade-up">
+                <h2>How It Works</h2>
+                <div class="headline-line"></div>
+            </div>
+            <div class="timeline-shell">
+                <div class="timeline-step" data-aos="fade-left">
+                    <strong><span class="me-2">01</span>School Onboarding</strong>
+                    <p>Owner creates school and admin. Branding and subscription are configured.</p>
+                </div>
+                <div class="timeline-step" data-aos="fade-right">
+                    <strong><span class="me-2">02</span>Batch Setup</strong>
+                    <p>School admin creates batches and assigns trusted batch controllers.</p>
+                </div>
+                <div class="timeline-step" data-aos="fade-left">
+                    <strong><span class="me-2">03</span>Member Verification</strong>
+                    <p>Alumni register, then admin or CR verifies and approves membership.</p>
+                </div>
+                <div class="timeline-step" data-aos="fade-right">
+                    <strong><span class="me-2">04</span>Community Growth</strong>
+                    <p>Events, posts, gallery uploads, and campaigns keep the network active.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="public-section">
+        <div class="container">
+            <div class="section-headline" data-aos="fade-up">
+                <h2>Trusted by Schools Across the Nation</h2>
+                <div class="headline-line"></div>
+            </div>
+            <div class="logo-ticker mb-4" data-aos="fade-up">
+                <div class="logo-track">
+                    <div class="logo-pill">Dhaka Collegiate School</div>
+                    <div class="logo-pill">Rajshahi Govt School</div>
+                    <div class="logo-pill">Chittagong Grammar</div>
+                    <div class="logo-pill">Khulna Model School</div>
+                    <div class="logo-pill">Sylhet High School</div>
+                    <div class="logo-pill">Barishal Zilla School</div>
+                    <div class="logo-pill">Dhaka Collegiate School</div>
+                    <div class="logo-pill">Rajshahi Govt School</div>
+                    <div class="logo-pill">Chittagong Grammar</div>
+                    <div class="logo-pill">Khulna Model School</div>
+                    <div class="logo-pill">Sylhet High School</div>
+                    <div class="logo-pill">Barishal Zilla School</div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="70">
+                    <article class="glass-card p-3 h-100">
+                        <p class="mb-3">“Our alumni engagement increased in 3 months. Communication is now structured and transparent.”</p>
+                        <strong>Principal, Dhaka Collegiate</strong>
+                    </article>
+                </div>
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="120">
+                    <article class="glass-card p-3 h-100">
+                        <p class="mb-3">“CR permissions and approval flow solved our content moderation issues.”</p>
+                        <strong>School Admin, Rajshahi Govt</strong>
+                    </article>
+                </div>
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="180">
+                    <article class="glass-card p-3 h-100">
+                        <p class="mb-3">“Donation campaigns became measurable and easier to audit.”</p>
+                        <strong>Alumni Coordinator, Sylhet High</strong>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="public-section">
+        <div class="container">
+            <div class="section-headline" data-aos="fade-up">
+                <h2>Flexible Pricing</h2>
+                <div class="headline-line"></div>
+                <div class="mt-3 d-inline-flex price-toggle" data-pricing-toggle>
+                    <button type="button" class="active" data-cycle="monthly">Monthly</button>
+                    <button type="button" data-cycle="yearly">Yearly</button>
+                </div>
+            </div>
+            <div class="pricing-grid">
+                <article class="price-card" data-aos="zoom-in">
+                    <h4>Basic</h4>
+                    <p class="price-amount" data-monthly="৳1,499" data-yearly="৳14,990">৳1,499</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fa-solid fa-check me-1"></i> 3 batches</li>
+                        <li><i class="fa-solid fa-check me-1"></i> Member verification</li>
+                        <li><i class="fa-solid fa-check me-1"></i> Basic analytics</li>
+                    </ul>
+                    <a class="public-btn-primary d-inline-flex mt-2 route-link" th:href="@{/register}">Start Basic</a>
+                </article>
+                <article class="price-card featured" data-aos="zoom-in" data-aos-delay="80">
+                    <span class="price-badge">Most Popular</span>
+                    <h4>Standard</h4>
+                    <p class="price-amount" data-monthly="৳2,999" data-yearly="৳29,990">৳2,999</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fa-solid fa-check me-1"></i> Unlimited batches</li>
+                        <li><i class="fa-solid fa-check me-1"></i> CR permission controls</li>
+                        <li><i class="fa-solid fa-check me-1"></i> Donations and gallery</li>
+                    </ul>
+                    <a class="public-btn-primary d-inline-flex mt-2 route-link" th:href="@{/register}">Start Standard</a>
+                </article>
+                <article class="price-card" data-aos="zoom-in" data-aos-delay="160">
+                    <h4>Premium</h4>
+                    <p class="price-amount" data-monthly="৳5,999" data-yearly="৳59,990">৳5,999</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fa-solid fa-check me-1"></i> Advanced analytics</li>
+                        <li><i class="fa-solid fa-check me-1"></i> Priority support</li>
+                        <li><i class="fa-solid fa-check me-1"></i> Partnership workflow</li>
+                    </ul>
+                    <a class="public-btn-primary d-inline-flex mt-2 route-link" th:href="@{/register}">Start Premium</a>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+
+<th:block th:replace="~{fragments/public-layout :: publicFooter}"></th:block>
+
+<div class="modal fade" id="demoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-secondary">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">Platform Demo</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo video" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script th:src="@{/js/public-ui.js}"></script>
+</body>
+</html>

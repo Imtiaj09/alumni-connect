@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Alumni Connect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/public-ui.css}">
+</head>
+<body class="public-page">
+<th:block th:replace="~{fragments/public-layout :: publicCursor}"></th:block>
+
+<main class="auth-shell">
+    <section class="auth-brand-pane">
+        <div class="auth-pane-content">
+            <a th:href="@{/}" class="public-brand route-link fs-4"><span class="brand-orb"></span>Alumni Connect</a>
+            <h1 class="mt-4">Welcome Back to Your Community</h1>
+            <p class="mt-2">Secure entry for software owner, school admin, CR, and alumni members.</p>
+
+            <div class="testimonial-rotator" data-rotator>
+                <article class="testimonial-item active glass-card p-3">
+                    <p class="mb-2">“Our batch communication is now faster and verified.”</p>
+                    <small>Rafiul, Batch 2015</small>
+                </article>
+                <article class="testimonial-item glass-card p-3">
+                    <p class="mb-2">“Admin moderation and CR controls made operations smooth.”</p>
+                    <small>Nabila, School Admin</small>
+                </article>
+                <article class="testimonial-item glass-card p-3">
+                    <p class="mb-2">“Fundraising visibility improved trust among alumni.”</p>
+                    <small>Tanvir, Alumni Coordinator</small>
+                </article>
+            </div>
+
+            <div class="row g-2 mt-4">
+                <div class="col-6"><div class="glass-card p-2 text-center"><strong>500+</strong><br><small>Schools</small></div></div>
+                <div class="col-6"><div class="glass-card p-2 text-center"><strong>120K+</strong><br><small>Members</small></div></div>
+                <div class="col-6"><div class="glass-card p-2 text-center"><strong>2K+</strong><br><small>Batches</small></div></div>
+                <div class="col-6"><div class="glass-card p-2 text-center"><strong>5M+</strong><br><small>Donations</small></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="auth-form-pane">
+        <div class="auth-card auth-flip" id="authFlip">
+            <div class="auth-flip-inner">
+                <div class="auth-face">
+                    <h3 class="mb-1">Sign In</h3>
+                    <p class="mb-3">Sign in to your alumni account.</p>
+                    <form th:action="@{/login}" method="post" id="loginForm">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <div class="floating-group">
+                            <input id="loginEmail" type="email" name="username" placeholder=" " required>
+                            <label for="loginEmail">Email Address</label>
+                        </div>
+                        <div class="floating-group">
+                            <input id="loginPassword" type="password" name="password" placeholder=" " required>
+                            <label for="loginPassword">Password</label>
+                            <button id="toggleLoginPassword" class="field-inline-icon" type="button"><i class="fa-regular fa-eye"></i></button>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="#" id="forgotLink">Forgot Password?</a>
+                        </div>
+                        <button class="cta-main w-100 justify-content-center" type="submit">Sign In</button>
+                    </form>
+                    <p class="mt-3 mb-0 text-danger" th:if="${param.error}">Invalid email or password. Try again.</p>
+                    <div class="text-center my-3"><small>or continue with</small></div>
+                    <div class="d-grid gap-2">
+                        <button class="social-btn" type="button"><i class="fa-brands fa-google me-1"></i> Google</button>
+                        <button class="social-btn" type="button"><i class="fa-brands fa-linkedin me-1"></i> LinkedIn</button>
+                    </div>
+                    <p class="mt-3 mb-0">Do not have an account? <a class="route-link" th:href="@{/register}">Sign Up</a></p>
+                </div>
+                <div class="auth-face auth-back">
+                    <h3 class="mb-2">Reset Password</h3>
+                    <p class="mb-3">Enter your email to receive a reset link.</p>
+                    <form>
+                        <div class="floating-group">
+                            <input id="resetEmail" type="email" placeholder=" " required>
+                            <label for="resetEmail">Email Address</label>
+                        </div>
+                        <button class="cta-main w-100 justify-content-center" type="submit">Send Reset Link</button>
+                    </form>
+                    <a href="#" id="backToLogin" class="d-inline-block mt-3">Back to Login</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script th:src="@{/js/public-ui.js}"></script>
+</body>
+</html>
